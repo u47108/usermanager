@@ -2,7 +2,7 @@
 User Manager - Sample CRUD demo using angular
 API Mock que permite conectarse a ella por los verbos propios de una API Rest, en base a esta API se ha visto como necesario que se cree una interfaz que permita listar, crear, editar y borrar usuarios, es por esto que se te pide a ti que puedas crear una interfaz dentro del proyecto, haciendo uso de REACT, ANGULAR o VUE y que permita hacer FETCH a nuestra API (http://arsene.azurewebsites.net/User ).
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.3.
 
 ## Development server
 
