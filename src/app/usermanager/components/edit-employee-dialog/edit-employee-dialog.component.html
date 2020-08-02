@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Edit User</h2>
+<mat-dialog-content [formGroup]="form">
+  <div class="example-container">
+        <mat-form-field style="display:none">
+          <input matInput placeholder="id" formControlName="id" readonly="readonly" #idvalue />
+          </mat-form-field>
+
+    
+    <mat-form-field>
+      <input matInput placeholder="nombre" formControlName="nombre" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="apellido" formControlName="apellido" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="email" formControlName="email" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="profesion" formControlName="profesion" />
+    </mat-form-field>
+ 
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="onEdit(indexvalue)">
+    <mat-icon>save</mat-icon> Save
+  </button>
+  <button mat-button color="primary" (click)="onCancel()">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+</mat-dialog-actions>

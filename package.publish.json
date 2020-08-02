@@ -1,0 +1,10 @@
+{
+    "name": "user-crud-app",
+    "version": "1.0.0",
+    "description": "user-crud-app application package",
+    "license": "SEE LICENSE IN LICENSE",
+    "author": "LNunez",
+    "scripts": {
+    }
+  }
+  

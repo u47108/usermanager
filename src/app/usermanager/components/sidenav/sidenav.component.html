@@ -1,0 +1,28 @@
+<mat-sidenav-container class="app-sidenav-container" [dir]="dir">
+  <mat-sidenav
+    #sidenav
+    class="app-sidenav mat-elevation-z2"
+    [opened]="!isScreenSmall()"
+    [mode]="isScreenSmall() ? 'over' : 'side'"
+  >
+    <mat-toolbar color="primary">Menus</mat-toolbar>
+     <mat-nav-list>
+      <mat-list-item>
+          <a matLine [routerLink]="['/usermanager']"> <mat-icon>home</mat-icon> Home </a>
+      </mat-list-item>
+      <mat-list-item> <mat-icon>add_comment</mat-icon> Comment </mat-list-item>
+      <mat-list-item>
+          <mat-icon>apps</mat-icon> Apps
+      </mat-list-item>
+    </mat-nav-list>
+    <div class="copyright-container">
+      <a href="https://github.com/u47108" target="_blank"><span>Copyright &copy; Lnunez</span></a>
+      <div fxFlex></div>
+    </div>
+  </mat-sidenav>
+
+  <div class="app-sidenav-content">
+    <app-toolbar (toggleSidenav)="sidenav.toggle()" (toggleDir)="toggleDir()"></app-toolbar>
+    <div class="wrapper"><router-outlet></router-outlet></div>
+  </div>
+</mat-sidenav-container>
