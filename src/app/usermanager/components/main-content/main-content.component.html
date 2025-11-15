@@ -1,20 +1,113 @@
-<div>
-  <mat-card
-    *ngFor="let emp of (employeesData | async); let i = index"
-    class="kid"
-    >
-    <mat-card-header>
-      <!-- <div mat-card-avatar><mat-icon>person</mat-icon></div> -->
-      <mat-card-title>
-        
-        <mat-icon mat-card-avatar svgIcon="svg-3"></mat-icon> {{ emp.nombre }}
-        
-      </mat-card-title>
-      <mat-card-subtitle>{{ emp.id}}</mat-card-subtitle>
-      <div fxFlex></div>
-      <button mat-button color="primary" (click)="openEmployeeDialog(i, emp)" ><mat-icon>edit</mat-icon></button>
-     <button mat-button (click)="deleteItem(i,emp.id)"><mat-icon>delete</mat-icon></button>
-      </mat-card-header>
-    <hr>
-  </mat-card>
+<div class="main-content-container">
+  <!-- Search and Filter Section -->
+  <div class="search-toolbar" *ngIf="!isLoading">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar empleados</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="searchQuery" 
+        (input)="onSearchChange($event)"
+        placeholder="Buscar por nombre, email o profesión..."
+        autocomplete="off"
+        aria-label="Campo de búsqueda de empleados">
+      <mat-icon matPrefix>search</mat-icon>
+      <button 
+        mat-icon-button 
+        matSuffix 
+        *ngIf="searchQuery"
+        (click)="clearSearch()"
+        aria-label="Limpiar búsqueda">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-form-field>
+    
+    <div class="results-info" *ngIf="searchQuery">
+      <span>{{ filteredEmployees.length }} resultado(s) encontrado(s)</span>
+    </div>
   </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando empleados...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !isLoading">
+    <mat-icon color="warn" class="error-icon">error_outline</mat-icon>
+    <h3>Error al cargar empleados</h3>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="retryLoad()">
+      <mat-icon>refresh</mat-icon>
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-container" *ngIf="!isLoading && !error && filteredEmployees.length === 0">
+    <mat-icon class="empty-icon">people_outline</mat-icon>
+    <h3 *ngIf="!searchQuery">No hay empleados registrados</h3>
+    <h3 *ngIf="searchQuery">No se encontraron resultados</h3>
+    <p *ngIf="!searchQuery">Comienza agregando tu primer empleado usando el botón "+" en la barra de herramientas</p>
+    <p *ngIf="searchQuery">Intenta con otros términos de búsqueda</p>
+  </div>
+
+  <!-- Employees Grid -->
+  <div class="employees-grid" *ngIf="!isLoading && !error && filteredEmployees.length > 0">
+    <mat-card
+      *ngFor="let emp of filteredEmployees; trackBy: trackByEmployeeId; let i = index"
+      class="employee-card"
+      [attr.aria-label]="'Empleado ' + emp.nombre + ' ' + emp.apellido"
+      role="article">
+      <mat-card-header>
+        <div mat-card-avatar class="employee-avatar" [attr.aria-hidden]="true">
+          <mat-icon svgIcon="svg-3" aria-hidden="true"></mat-icon>
+        </div>
+        <mat-card-title>
+          <span class="employee-name">{{ emp.nombre }} {{ emp.apellido }}</span>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <span class="employee-id">ID: {{ emp.id }}</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="employee-details">
+        <div class="detail-row">
+          <mat-icon class="detail-icon" aria-hidden="true">email</mat-icon>
+          <span class="detail-text">{{ emp.email || 'Sin email' }}</span>
+        </div>
+        <div class="detail-row">
+          <mat-icon class="detail-icon" aria-hidden="true">work</mat-icon>
+          <span class="detail-text">{{ emp.profesion || 'Sin profesión' }}</span>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="card-actions">
+        <button 
+          mat-icon-button 
+          color="primary" 
+          (click)="openEmployeeDialog(i, emp)"
+          [attr.aria-label]="'Editar ' + emp.nombre + ' ' + emp.apellido"
+          title="Editar empleado">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button 
+          mat-icon-button 
+          color="warn" 
+          (click)="confirmDelete(i, emp)"
+          [attr.aria-label]="'Eliminar ' + emp.nombre + ' ' + emp.apellido"
+          title="Eliminar empleado">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Load More Button (for future pagination) -->
+  <div class="load-more-container" *ngIf="!isLoading && !error && filteredEmployees.length > 0 && showLoadMore">
+    <button mat-button color="primary" (click)="loadMore()">
+      <mat-icon>expand_more</mat-icon>
+      Cargar más
+    </button>
+  </div>
+</div>

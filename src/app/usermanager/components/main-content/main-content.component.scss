@@ -1,47 +1,286 @@
-.container {
+// Variables for consistent theming
+$primary-color: #009688;
+$primary-hover: #00796b;
+$card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+$card-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
+$border-radius: 8px;
+$spacing-unit: 16px;
+$transition-speed: 0.3s;
+
+.main-content-container {
+  padding: $spacing-unit;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+
+  // Search Toolbar
+  .search-toolbar {
+    margin-bottom: $spacing-unit * 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit;
+
+    .search-field {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .results-info {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+
+  // Loading State
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-unit * 4;
+    gap: $spacing-unit;
+
+    p {
+      color: #666;
+      margin: 0;
+    }
+  }
+
+  // Error State
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-unit * 4;
+    gap: $spacing-unit;
+    text-align: center;
+
+    .error-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: #f44336;
+    }
+
+    h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    p {
+      color: #666;
+      margin: 0;
+    }
+  }
+
+  // Empty State
+  .empty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-unit * 4;
+    gap: $spacing-unit;
+    text-align: center;
+
+    .empty-icon {
+      font-size: 80px;
+      width: 80px;
+      height: 80px;
+      color: #ccc;
+    }
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-weight: 500;
+    }
+
+    p {
+      color: #666;
+      margin: 0;
+      max-width: 400px;
+    }
+  }
+
+  // Employees Grid - Optimized with CSS Grid
+  .employees-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 0.5em;
-    padding: 0.5em 0.5em;
-}
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: $spacing-unit;
+    padding: $spacing-unit 0;
 
-.mat-card-avatar {
-    background-color: teal;
-    mat-icon {
-        padding: 8px;
-        color: white;
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: $spacing-unit * 0.75;
     }
-}
 
-mat-card {
+    @media (min-width: 1200px) {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+  }
+
+  // Employee Card - Modern design with hover effects
+  .employee-card {
     cursor: pointer;
-    padding: 16px;
-    border-left: 2px solid transparent;
-}
+    transition: transform $transition-speed ease, box-shadow $transition-speed ease;
+    border-radius: $border-radius;
+    border-left: 4px solid $primary-color;
+    overflow: hidden;
+    will-change: transform, box-shadow; // Performance optimization
 
-kexpense-search-input {
-    width: 50%;
-    margin: auto;
-}
-
-@media only screen and (max-width: 621px) {
-    kexpense-search-input {
-        width: calc(100% - 1em);
+    // Hover effect for better interactivity
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $card-shadow-hover;
     }
+
+    // Active state
+    &:active {
+      transform: translateY(-2px);
+    }
+
+    // Focus state for accessibility
+    &:focus-within {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+
+    // Card Header
+    ::ng-deep .mat-card-header {
+      margin-bottom: $spacing-unit * 0.5;
+
+      .mat-card-title {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        line-height: 1.4;
+
+        .employee-name {
+          display: block;
+          color: #333;
+        }
+      }
+
+      .mat-card-subtitle {
+        font-size: 14px;
+        color: #666;
+
+        .employee-id {
+          display: inline-block;
+          background: #f5f5f5;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-family: monospace;
+        }
+      }
+    }
+
+    // Employee Avatar
+    .employee-avatar {
+      background: linear-gradient(135deg, $primary-color 0%, $primary-hover 100%);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        color: white;
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    // Card Content - Employee Details
+    .employee-details {
+      padding: $spacing-unit 0;
+      margin-bottom: $spacing-unit * 0.5;
+
+      .detail-row {
+        display: flex;
+        align-items: center;
+        gap: $spacing-unit * 0.5;
+        margin-bottom: $spacing-unit * 0.5;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .detail-icon {
+          color: $primary-color;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+
+        .detail-text {
+          color: #555;
+          font-size: 14px;
+          flex: 1;
+          word-break: break-word; // Prevent overflow
+        }
+      }
+    }
+
+    // Card Actions
+    .card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacing-unit * 0.25;
+      padding: $spacing-unit * 0.5 0 0 0;
+      margin: 0;
+
+      button {
+        transition: transform 0.2s ease, background-color 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+
+  // Load More Container
+  .load-more-container {
+    display: flex;
+    justify-content: center;
+    padding: $spacing-unit * 2;
+  }
 }
 
-h3 {
-  font-weight: normal;
-  color: #616161;
-  font-size: 16px;
-  margin: 8px;
+// Print styles
+@media print {
+  .main-content-container {
+    .search-toolbar,
+    .card-actions {
+      display: none;
+    }
+
+    .employee-card {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  }
 }
 
-mat-card.pending-approval {
-    border-left: 2px solid blue;
-    font-style: italic;
-}
+// Reduced motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  .employee-card {
+    transition: none;
 
-.mat-card-header .mat-card-subtitle:not(:first-child) {
-    margin-bottom: 0;
+    &:hover {
+      transform: none;
+    }
+  }
 }
